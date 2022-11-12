@@ -3,10 +3,21 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 from streamlit_folium import st_folium
+from streamlit_lottie import st_lottie
 import folium
+import requests
 
 #Setting layout of the page
 st.set_page_config(layout = "wide") 
+
+# Animaiton Loader Function
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_covid = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_CXxysN.json')
 
 #Reading dataframe
 df = pd.read_csv("Data/data.csv")
@@ -14,6 +25,7 @@ list_of_columns = list(df.columns)[2:-2]
 
 #Adding sidebar
 with st.sidebar:
+	st_lottie(lottie_covid, speed=1.5, width=200, height=200)
 	column = st.selectbox("Which feature you want to see?",list_of_columns)
 
 #Grouping data based on filters
